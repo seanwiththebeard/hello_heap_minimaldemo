@@ -31,7 +31,7 @@ void heap_avail(void)
     if ( !t ) break;
     free(t);
     x+=10;
-    sprintf(stringA, "heap avail: %i bytes",x);
+    sprintf(stringA, "heap avail: %u bytes",x);
     vram_adr(NTADR_A(2,2));		// set address
     vram_write(stringA, strlen(stringA));
   }
