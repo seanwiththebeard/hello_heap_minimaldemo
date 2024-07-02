@@ -58,6 +58,7 @@ void setHeap()
   heaporg[0] = 0x7000; //heaporg
   heapptr[0] = heaporg[0]; //heapptr
   heapend[0] = 0x8000; //heapend
+  memset((int*)heaporg[0], 0, heapend[0] - heaporg[0]); 
 }
 
 int heap_avail(void)
@@ -65,24 +66,24 @@ int heap_avail(void)
   char *t;
   char stringA[24] = "";
   int x = 1;
-  
+
   while(1)
   {
     if (!(t=malloc(x))) break;
     free(t);
     ++x;
   }
-  
+
   ppu_off();
   sprintf(stringA, "heap starts: $%4x", heaporg[0]);
-    vram_adr(NTADR_A(2,3));
-    vram_write(stringA, strlen(stringA));
+  vram_adr(NTADR_A(2,3));
+  vram_write(stringA, strlen(stringA));
   sprintf(stringA, "heap ends:   $%4x", heapend[0]);
-    vram_adr(NTADR_A(2,4));
-    vram_write(stringA, strlen(stringA));
+  vram_adr(NTADR_A(2,4));
+  vram_write(stringA, strlen(stringA));
   sprintf(stringA, "heap avail:   %4u bytes",x - 1);
-    vram_adr(NTADR_A(2,2));
-    vram_write(stringA, strlen(stringA));
+  vram_adr(NTADR_A(2,2));
+  vram_write(stringA, strlen(stringA));
   sprintf(stringA, "Last %d bytes stored @ $%4x",length, heapptr[0]);
   vram_adr(NTADR_A(2,7));
   vram_write(stringA, strlen(stringA));
@@ -95,48 +96,43 @@ char pad;
 void main(void) {
   MMC3_WRAM_ENABLE();
   setHeap();
-  
+  ppu_off();
+
   // set palette colors
   pal_col(0,0x02);	// set screen to dark blue
   pal_col(1,0x14);	// fuchsia
   pal_col(2,0x20);	// grey
   pal_col(3,0x30);	// white
   heap_avail();
-  
+
   // enable PPU rendering (turn on screen)
   //ppu_on_all();
 
   // infinite loop
   while (1)
   {
+
+    byte i = 0;
+    char *dataA = malloc(length);
+    for (i = 0; i < length; ++i)
+      dataA[i] = i + heapptr[0];
+
+
+    ppu_off();
+    vram_adr(NTADR_A(2,8));
+    vram_write(dataA, length - 1);
+    ppu_on_all();
+    heap_avail();
+
+
+    if (heapend[0] - (heapptr[0] + length) < 0)
+      main();
+
     pad = pad_poll(0);
-    
-    //if (PAD_A&pad)
-    {
-      byte i = 0;
-      char *dataA = malloc(length);
-      for (i = 0; i < length; ++i)
-        dataA[i] = i + heapptr[0];
-      
-      
-      ppu_off();
-      vram_adr(NTADR_A(2,8));
-      vram_write(dataA, length - 1);
-      ppu_on_all();
-      heap_avail();
-      
-      
-      if (heapend[0] - (heapptr[0] + length) < 0)
-        while(1)
-        {
-        }
-      
-      while(PAD_A&pad)
-      {
-        pad = pad_poll(0);
-      }
-    }
+    if (pad & PAD_START)
+      main();
+
   }
-  
-  
+  main();
+
 }
