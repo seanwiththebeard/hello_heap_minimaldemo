@@ -13,6 +13,9 @@ Finally, turn on the PPU to display video.
 #include <string.h>
 #include <peekpoke.h>
 
+#define length 128
+
+
 #define NES_MAPPER 4		// Mapper 4 (MMC3)
 #define NES_PRG_BANKS 4		// # of 16KB PRG banks
 #define NES_CHR_BANKS 1		// # of 8KB CHR banks
@@ -71,20 +74,20 @@ int heap_avail(void)
   }
   
   ppu_off();
-  sprintf(stringA, "heap starts: $%x", heaporg[0]);
+  sprintf(stringA, "heap starts: $%4x", heaporg[0]);
     vram_adr(NTADR_A(2,3));
     vram_write(stringA, strlen(stringA));
-  sprintf(stringA, "heap ends:   $%x", heapend[0]);
+  sprintf(stringA, "heap ends:   $%4x", heapend[0]);
     vram_adr(NTADR_A(2,4));
     vram_write(stringA, strlen(stringA));
-  sprintf(stringA, "heap avail:   %u bytes",x - 1);
+  sprintf(stringA, "heap avail:   %4u bytes",x - 1);
     vram_adr(NTADR_A(2,2));
     vram_write(stringA, strlen(stringA));
-  sprintf(stringA, "Last Contents @ $%x",heapptr[0]);
+  sprintf(stringA, "Last %d bytes stored @ $%4x",length, heapptr[0]);
   vram_adr(NTADR_A(2,7));
   vram_write(stringA, strlen(stringA));
   ppu_on_all();
-  return heapptr[0];
+  return x - 1;
 }
 
 char pad;
@@ -98,7 +101,7 @@ void main(void) {
   pal_col(1,0x14);	// fuchsia
   pal_col(2,0x20);	// grey
   pal_col(3,0x30);	// white
-
+  heap_avail();
   
   // enable PPU rendering (turn on screen)
   //ppu_on_all();
@@ -110,24 +113,30 @@ void main(void) {
     
     //if (PAD_A&pad)
     {
-      #define length 16
-      char i = 0;
-      byte x = heap_avail();
+      byte i = 0;
       char *dataA = malloc(length);
       for (i = 0; i < length; ++i)
-        dataA[i] = x + i;
+        dataA[i] = i + heapptr[0];
+      
       
       ppu_off();
       vram_adr(NTADR_A(2,8));
-      vram_write(dataA, length);
+      vram_write(dataA, length - 1);
       ppu_on_all();
+      heap_avail();
+      
+      
+      if (heapend[0] - (heapptr[0] + length) < 0)
+        while(1)
+        {
+        }
       
       while(PAD_A&pad)
       {
         pad = pad_poll(0);
       }
     }
-
-    
   }
+  
+  
 }
