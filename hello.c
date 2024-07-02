@@ -51,9 +51,17 @@ void heap_avail(void)
   char stringA[24] = "";
   
   int *heap = (int*)&_heaporg;
-  heap[0] = 0x6000; //heaporg
+  heap[0] = 0x7000; //heaporg
   heap[1] = heap[0]; //heapptr
   heap[2] = 0x8000; //heapend
+  
+  sprintf(stringA, "heap starts: $%4x",heap[0]);
+    vram_adr(NTADR_A(2,3));
+    vram_write(stringA, strlen(stringA));
+  
+  sprintf(stringA, "heap ends:   $%4x",heap[2]);
+    vram_adr(NTADR_A(2,4));
+    vram_write(stringA, strlen(stringA));
   
   x=1;
   while(1)
@@ -72,13 +80,7 @@ void heap_avail(void)
     vram_adr(NTADR_A(2,2));
     vram_write(stringA, strlen(stringA));
   
-  sprintf(stringA, "heap starts: $%4x",heap[0]);
-    vram_adr(NTADR_A(2,3));
-    vram_write(stringA, strlen(stringA));
   
-  sprintf(stringA, "heap ends:   $%4x",heap[2]);
-    vram_adr(NTADR_A(2,4));
-    vram_write(stringA, strlen(stringA));
 }
 
 // link the pattern table into CHR ROM
