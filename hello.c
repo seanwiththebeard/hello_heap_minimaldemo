@@ -13,7 +13,7 @@ Finally, turn on the PPU to display video.
 #define NES_MAPPER 4		// Mapper 4 (MMC3)
 #define NES_PRG_BANKS 4		// # of 16KB PRG banks
 #define NES_CHR_BANKS 1		// # of 8KB CHR banks
-//resource "nesbanked.cfg"
+//#resource "nesbanked.cfg"
 #define CFGFILE nesbanked.cfg
 
 void heap_avail(void)
