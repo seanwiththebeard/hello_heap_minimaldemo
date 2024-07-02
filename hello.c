@@ -9,6 +9,9 @@ Finally, turn on the PPU to display video.
 #include "neslib.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <_heap.h>
+#include <string.h>
+//extern unsigned*          __heaporg;
 
 #define NES_MAPPER 4		// Mapper 4 (MMC3)
 #define NES_PRG_BANKS 4		// # of 16KB PRG banks
@@ -18,25 +21,26 @@ Finally, turn on the PPU to display video.
 
 void heap_avail(void)
 {
-    int x;
-    char *t;
+  int x;
+  char *t;
   char stringA[24] = "";
-    x=10;
-    while(1)
-    {
-      t=malloc(x);
-      if ( !t ) break;
-      free(t);
-      x+=10;
-    }
-    if ( x > 10 ) 
-      x-=10;
-    else
-      x=0;
-  
-  sprintf(stringA, "heap avail: %i bytes\r\n",x);
-  vram_adr(NTADR_A(2,2));		// set address
-  vram_write(stringA, 13);
+  x=10;
+  while(1)
+  {
+    t=malloc(x);
+    if ( !t ) break;
+    free(t);
+    x+=10;
+    sprintf(stringA, "heap avail: %i bytes",x);
+    vram_adr(NTADR_A(2,2));		// set address
+    vram_write(stringA, strlen(stringA));
+  }
+  if ( x > 10 ) 
+    x-=10;
+  else
+    x=0;
+
+
 }
 
 // link the pattern table into CHR ROM
