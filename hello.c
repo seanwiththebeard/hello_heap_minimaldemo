@@ -19,11 +19,18 @@ Finally, turn on the PPU to display video.
 //#resource "nesbanked.cfg"
 #define CFGFILE nesbanked.cfg
 
+int *heap = (int*)&_heaporg;
+
 void heap_avail(void)
 {
   int x;
   char *t;
   char stringA[24] = "";
+  
+  heap[0] = 0x6000;
+  heap[1] = 0x7000;
+  heap[2] = 0x8000;
+  
   x=10;
   while(1)
   {
