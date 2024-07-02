@@ -19,7 +19,6 @@ Finally, turn on the PPU to display video.
 //#resource "nesbanked.cfg"
 #define CFGFILE nesbanked.cfg
 
-int *heap = (int*)&_heaporg;
 
 void heap_avail(void)
 {
@@ -27,27 +26,27 @@ void heap_avail(void)
   char *t;
   char stringA[24] = "";
   
+  int *heap = (int*)&_heaporg;
   heap[0] = 0x6000;
   heap[1] = 0x7000;
   heap[2] = 0x8000;
   
-  x=10;
+  x=1;
   while(1)
   {
     t=malloc(x);
     if ( !t ) break;
     free(t);
-    x+=10;
-    sprintf(stringA, "heap avail: %u bytes",x);
-    vram_adr(NTADR_A(2,2));		// set address
-    vram_write(stringA, strlen(stringA));
+    ++x;
   }
-  if ( x > 10 ) 
-    x-=10;
-  else
-    x=0;
-
-
+  //if ( x > 10 ) 
+    //x-=10;
+  //else
+    //x=0;
+  
+  sprintf(stringA, "heap avail: %u bytes",x - 1);
+    vram_adr(NTADR_A(2,2));
+    vram_write(stringA, strlen(stringA));
 }
 
 // link the pattern table into CHR ROM
