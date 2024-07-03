@@ -126,13 +126,12 @@ void main(void) {
 
 
     if (heapend[0] - (heapptr[0] + length) < 0)
-      main();
+      break;
 
     pad = pad_poll(0);
     if (pad & PAD_START)
-      main();
+      break;
 
   }
   main();
-
 }
