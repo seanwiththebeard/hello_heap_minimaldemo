@@ -49,6 +49,54 @@ Finally, turn on the PPU to display video.
 #define MMC3_WRAM_ENABLE() POKE(0xA001, 0x80)
 #define MMC3_WRAM_READ_ONLY() POKE(0xA001, 0xC0)
 
+#pragma code-name(push, "CODEA_0")
+void function_A_0()
+{
+  char stringA[24] = "";
+  ppu_off();
+  sprintf(stringA, "Code A 0");
+  vram_adr(NTADR_A(2,25));
+  vram_write(stringA, strlen(stringA));
+  ppu_on_all();
+}
+#pragma code-name(pop)
+#pragma code-name(push, "CODEA_30")
+void function_A_30()
+{
+  char stringA[24] = "";
+  ppu_off();
+  sprintf(stringA, "Code A 30");
+  vram_adr(NTADR_A(2,25));
+  vram_write(stringA, strlen(stringA));
+  ppu_on_all();
+}
+#pragma code-name(pop)
+
+#pragma code-name(push, "CODEB_0")
+void function_B_0()
+{
+  char stringA[24] = "";
+  ppu_off();
+  sprintf(stringA, "Code B 0");
+  vram_adr(NTADR_A(2,26));
+  vram_write(stringA, strlen(stringA));
+  ppu_on_all();
+}
+#pragma code-name(pop)
+
+#pragma code-name(push, "CODEB_30")
+void function_B_30()
+{
+  char stringA[24] = "";
+  ppu_off();
+  sprintf(stringA, "Code B 30");
+  vram_adr(NTADR_A(2,26));
+  vram_write(stringA, strlen(stringA));
+  ppu_on_all();
+}
+#pragma code-name(pop)
+
+
 int *heaporg = (int*)&_heaporg;
 int *heapptr = (int*)&_heapptr;
 int *heapend = (int*)&_heapend;
@@ -104,6 +152,9 @@ void main(void) {
   pal_col(2,0x20);	// grey
   pal_col(3,0x30);	// white
   heap_avail();
+  
+  function_A_0();
+  function_B_0();
 
   // enable PPU rendering (turn on screen)
   //ppu_on_all();
