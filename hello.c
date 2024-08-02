@@ -171,7 +171,7 @@ void main(void) {
   MMC3_PRG_8000(30);
   MMC3_PRG_A000(61);
   //function_A_30();
-  //function_B_30();
+  function_B_30();
 
   // enable PPU rendering (turn on screen)
   //ppu_on_all();
