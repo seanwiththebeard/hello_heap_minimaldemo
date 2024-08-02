@@ -18,7 +18,7 @@ Finally, turn on the PPU to display video.
 
 #define NES_MAPPER 4		// Mapper 4 (MMC3)
 #define NES_PRG_BANKS 32	// # of 16KB PRG banks
-#define NES_CHR_BANKS 16		// # of 8KB CHR banks
+#define NES_CHR_BANKS 32	// # of 8KB CHR banks
 //#resource "nesbanked.cfg"
 #define CFGFILE nesbanked.cfg
 
