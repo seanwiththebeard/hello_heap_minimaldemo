@@ -108,6 +108,7 @@ void function_B_30()
 #pragma rodata-name(pop)
 
 
+
 int *heaporg = (int*)&_heaporg;
 int *heapptr = (int*)&_heapptr;
 int *heapend = (int*)&_heapend;
@@ -172,6 +173,7 @@ void main(void) {
   MMC3_PRG_A000(61);
   //function_A_30();
   function_B_30();
+  
 
   // enable PPU rendering (turn on screen)
   //ppu_on_all();
