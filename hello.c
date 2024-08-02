@@ -60,6 +60,7 @@ void function_A_0()
   ppu_on_all();
 }
 #pragma code-name(pop)
+
 #pragma code-name(push, "CODEA_30")
 void function_A_30()
 {
@@ -78,7 +79,7 @@ void function_B_0()
   char stringA[24] = "";
   ppu_off();
   sprintf(stringA, "Code B 0");
-  vram_adr(NTADR_A(2,26));
+  vram_adr(NTADR_A(2,24));
   vram_write(stringA, strlen(stringA));
   ppu_on_all();
 }
@@ -90,7 +91,7 @@ void function_B_30()
   char stringA[24] = "";
   ppu_off();
   sprintf(stringA, "Code B 30");
-  vram_adr(NTADR_A(2,26));
+  vram_adr(NTADR_A(2,24));
   vram_write(stringA, strlen(stringA));
   ppu_on_all();
 }
@@ -153,8 +154,14 @@ void main(void) {
   pal_col(3,0x30);	// white
   heap_avail();
   
+  MMC3_PRG_8000(0);
+  MMC3_PRG_A000(31);
   function_A_0();
-  function_B_0();
+  function_B_30();
+  MMC3_PRG_8000(30);
+  MMC3_PRG_A000(61);
+  //function_A_30();
+  //function_B_30();
 
   // enable PPU rendering (turn on screen)
   //ppu_on_all();
