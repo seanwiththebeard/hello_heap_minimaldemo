@@ -50,6 +50,7 @@ Finally, turn on the PPU to display video.
 #define MMC3_WRAM_READ_ONLY() POKE(0xA001, 0xC0)
 
 #pragma code-name(push, "CODEA_0")
+#pragma rodata-name(push, "CODEA_0")
 void function_A_0()
 {
   char stringA[24] = "";
@@ -60,8 +61,12 @@ void function_A_0()
   ppu_on_all();
 }
 #pragma code-name(pop)
+#pragma rodata-name(pop)
+
 
 #pragma code-name(push, "CODEA_30")
+#pragma rodata-name(push, "CODEA_30")
+
 void function_A_30()
 {
   char stringA[24] = "";
@@ -72,8 +77,10 @@ void function_A_30()
   ppu_on_all();
 }
 #pragma code-name(pop)
+#pragma rodata-name(pop)
 
 #pragma code-name(push, "CODEB_0")
+#pragma rodata-name(push, "CODEB_0")
 void function_B_0()
 {
   char stringA[24] = "";
@@ -84,8 +91,10 @@ void function_B_0()
   ppu_on_all();
 }
 #pragma code-name(pop)
+#pragma rodata-name(pop)
 
 #pragma code-name(push, "CODEB_30")
+#pragma rodata-name(push, "CODEB_30")
 void function_B_30()
 {
   char stringA[24] = "";
@@ -96,6 +105,7 @@ void function_B_30()
   ppu_on_all();
 }
 #pragma code-name(pop)
+#pragma rodata-name(pop)
 
 
 int *heaporg = (int*)&_heaporg;
