@@ -154,6 +154,7 @@ int heap_avail(void)
 char pad;
 // main function, run after console reset
 void main(void) {
+  delay(12);
   // set palette colors
   pal_col(0,0x02);	// set screen to dark blue
   pal_col(1,0x14);	// fuchsia
@@ -163,7 +164,7 @@ void main(void) {
   
   MMC3_WRAM_ENABLE();
   MMC3_PRG_8000(0);
-  MMC3_PRG_A000(31);
+  MMC3_PRG_A000(0);
   
   MMC3_CHR_0000(0);
   MMC3_CHR_0800(0);
@@ -176,12 +177,12 @@ void main(void) {
   heap_avail();
   
   
-  function_A_0();
-  function_B_30();
-  MMC3_PRG_8000(30);
-  MMC3_PRG_A000(61);
+  //function_A_0();
+  //function_B_30();
+  //MMC3_PRG_8000(30);
+  //MMC3_PRG_A000(61);
   //function_A_30();
-  function_B_30();
+  //function_B_30();
   
 
   // enable PPU rendering (turn on screen)
