@@ -15,6 +15,7 @@ Finally, turn on the PPU to display video.
 
 #define length 128
 
+//#resource "Hello_Heap_Compare.zip"
 
 #define NES_MAPPER 4		// Mapper 4 (MMC3)
 #define NES_PRG_BANKS 32	// # of 16KB PRG banks
@@ -154,35 +155,25 @@ int heap_avail(void)
 char pad;
 // main function, run after console reset
 void main(void) {
-  delay(12);
+  MMC3_WRAM_ENABLE();
+  setHeap();
+  ppu_off();
+
   // set palette colors
   pal_col(0,0x02);	// set screen to dark blue
   pal_col(1,0x14);	// fuchsia
   pal_col(2,0x20);	// grey
   pal_col(3,0x30);	// white
-  //ppu_off();
-  
-  MMC3_WRAM_ENABLE();
-  MMC3_PRG_8000(0);
-  MMC3_PRG_A000(0);
-  
-  MMC3_CHR_0000(0);
-  MMC3_CHR_0800(0);
-  MMC3_CHR_1000(0);
-  MMC3_CHR_1400(0);
-  MMC3_CHR_1800(0);
-  MMC3_CHR_1C00(0);
-  
-  setHeap();
   heap_avail();
   
-  
-  //function_A_0();
-  //function_B_30();
-  //MMC3_PRG_8000(30);
-  //MMC3_PRG_A000(61);
+  MMC3_PRG_8000(0);
+  MMC3_PRG_A000(31);
+  function_A_0();
+  function_B_30();
+  MMC3_PRG_8000(30);
+  MMC3_PRG_A000(61);
   //function_A_30();
-  //function_B_30();
+  function_B_30();
   
 
   // enable PPU rendering (turn on screen)
