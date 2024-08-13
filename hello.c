@@ -1,3 +1,5 @@
+//#resource "crt0.o"
+////#link "crt0.o"
 
 /*
 A simple "hello world" example.
