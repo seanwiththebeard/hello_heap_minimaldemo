@@ -1,4 +1,4 @@
-//#resource "crt0.o"
+////#resource "crt0.o"
 ////#link "crt0.o"
 
 /*
@@ -40,8 +40,9 @@ Finally, turn on the PPU to display video.
 #define MMC3_CHR_1400(n) MMC3_SET_REG(3,n)
 #define MMC3_CHR_1800(n) MMC3_SET_REG(4,n)
 #define MMC3_CHR_1C00(n) MMC3_SET_REG(5,n)
+
 #define MMC3_PRG_8000(n) MMC3_SET_REG(6,n)
-#define MMC3_PRG_A000(n) MMC3_SET_REG(7,n)
+#define MMC3_PRG_A000(n) MMC3_SET_REG(7,n + 31)
 
 #define MMC3_MIRROR(n) POKE(0xa000, (n))
 
@@ -53,7 +54,6 @@ Finally, turn on the PPU to display video.
 #define MMC3_WRAM_READ_ONLY() POKE(0xA001, 0xC0)
 
 #pragma code-name(push, "CODEA_0")
-#pragma rodata-name(push, "CODEA_0")
 void function_A_0()
 {
   char stringA[24] = "";
@@ -64,11 +64,8 @@ void function_A_0()
   ppu_on_all();
 }
 #pragma code-name(pop)
-#pragma rodata-name(pop)
-
 
 #pragma code-name(push, "CODEA_30")
-#pragma rodata-name(push, "CODEA_30")
 
 void function_A_30()
 {
@@ -80,10 +77,8 @@ void function_A_30()
   ppu_on_all();
 }
 #pragma code-name(pop)
-#pragma rodata-name(pop)
 
 #pragma code-name(push, "CODEB_0")
-#pragma rodata-name(push, "CODEB_0")
 void function_B_0()
 {
   char stringA[24] = "";
@@ -94,23 +89,18 @@ void function_B_0()
   ppu_on_all();
 }
 #pragma code-name(pop)
-#pragma rodata-name(pop)
 
 #pragma code-name(push, "CODEB_30")
-#pragma rodata-name(push, "CODEB_30")
 void function_B_30()
 {
   char stringA[24] = "";
   ppu_off();
   sprintf(stringA, "Code B 30");
-  vram_adr(NTADR_A(2,24));
+  vram_adr(NTADR_A(2,20));
   vram_write(stringA, strlen(stringA));
   ppu_on_all();
 }
 #pragma code-name(pop)
-#pragma rodata-name(pop)
-
-
 
 int *heaporg = (int*)&_heaporg;
 int *heapptr = (int*)&_heapptr;
@@ -154,10 +144,25 @@ int heap_avail(void)
   return x - 1;
 }
 
+void MMC3_Init()
+{
+  MMC3_WRAM_ENABLE();
+  
+  MMC3_PRG_8000(0);
+  MMC3_PRG_A000(30);
+  
+  MMC3_CHR_0000(0);
+  MMC3_CHR_0800(1);
+  MMC3_CHR_1000(2);
+  MMC3_CHR_1400(3);
+  MMC3_CHR_1800(4);
+  MMC3_CHR_1C00(5);  
+}
+
 char pad;
 // main function, run after console reset
 void main(void) {
-  MMC3_WRAM_ENABLE();
+  MMC3_Init();
   setHeap();
   ppu_off();
 
@@ -168,14 +173,13 @@ void main(void) {
   pal_col(3,0x30);	// white
   heap_avail();
   
-  MMC3_PRG_8000(0);
-  MMC3_PRG_A000(31);
+  
   function_A_0();
   function_B_30();
-  MMC3_PRG_8000(30);
-  MMC3_PRG_A000(61);
+  //MMC3_PRG_8000(30);
+  //MMC3_PRG_A000(61);
   //function_A_30();
-  function_B_30();
+  //function_B_30();
   
 
   // enable PPU rendering (turn on screen)
