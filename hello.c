@@ -1,5 +1,4 @@
 //#resource "crt0.o"
-////#link "crt0.o"
 
 /*
 A simple "hello world" example.
@@ -17,7 +16,7 @@ Finally, turn on the PPU to display video.
 
 #define length 128
 
-//#resource "Hello_Heap_Compare.zip"
+////#resource "Hello_Heap_Compare.zip"
 
 #define NES_MAPPER 4		// Mapper 4 (MMC3)
 #define NES_PRG_BANKS 32	// # of 16KB PRG banks
@@ -26,7 +25,7 @@ Finally, turn on the PPU to display video.
 #define CFGFILE nesbanked.cfg
 
 // link the pattern table into CHR ROM
-//#link "chr_generic.s"
+////#link "chr_generic.s"
 
 #define MMC_MODE 0x00
 
@@ -162,12 +161,18 @@ void MMC3_Init()
 char pad;
 // main function, run after console reset
 void main(void) {
+  
+  ppu_on_all();
+  
+  while (0)
+  {};
+  
   MMC3_Init();
   setHeap();
-  ppu_off();
+  //ppu_off();  
 
   // set palette colors
-  //pal_col(0,0x02);	// set screen to dark blue
+  pal_col(0,0x02);	// set screen to dark blue
   pal_col(1,0x14);	// fuchsia
   pal_col(2,0x20);	// grey
   pal_col(3,0x30);	// white
@@ -176,6 +181,7 @@ void main(void) {
   
   function_A_0();
   function_B_30();
+  
   //MMC3_PRG_8000(30);
   //MMC3_PRG_A000(61);
   //function_A_30();
@@ -186,6 +192,7 @@ void main(void) {
   //ppu_on_all();
 
   // infinite loop
+  
   while (1)
   {
 
