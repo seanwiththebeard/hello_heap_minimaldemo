@@ -1,4 +1,5 @@
 //#resource "crt0.o"
+//#resource "Neslib_CRT0_Template.zip"
 
 /*
 A simple "hello world" example.
@@ -162,17 +163,19 @@ char pad;
 // main function, run after console reset
 void main(void) {
   
-  ppu_on_all();
   
-  while (0)
+  while (1)
   {};
+  //ppu_on_all();
   
   MMC3_Init();
+  
   setHeap();
+  
   //ppu_off();  
 
   // set palette colors
-  pal_col(0,0x02);	// set screen to dark blue
+  //pal_col(0,0x02);	// set screen to dark blue
   pal_col(1,0x14);	// fuchsia
   pal_col(2,0x20);	// grey
   pal_col(3,0x30);	// white
