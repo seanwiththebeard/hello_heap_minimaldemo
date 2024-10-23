@@ -26,7 +26,7 @@ Finally, turn on the PPU to display video.
 #define CFGFILE nesbanked.cfg
 
 // link the pattern table into CHR ROM
-////#link "chr_generic.s"
+//#link "chr_generic.s"
 
 #define MMC_MODE 0x00
 
@@ -163,14 +163,12 @@ char pad;
 // main function, run after console reset
 void main(void) {
   
-  
+  ppu_on_all();
   while (0)
   {};
   //ppu_on_all();
   
-  MMC3_Init();
   
-  setHeap();
   
   //ppu_off();  
 
@@ -179,6 +177,10 @@ void main(void) {
   pal_col(1,0x14);	// fuchsia
   pal_col(2,0x20);	// grey
   pal_col(3,0x30);	// white
+  
+  MMC3_Init();
+  
+  setHeap();  
   heap_avail();
   
   
